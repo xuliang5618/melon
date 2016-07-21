@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="sdu.gaming.melon.user.dao.IAccountDao">
+    <resultMap id="BaseResultMap" type="sdu.gaming.melon.api.domain.Account">
+        <id column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="account_num" property="accountNum" jdbcType="VARCHAR"/>
+        <result column="account_name" property="accountName" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <insert id="addAccount" parameterType="sdu.gaming.melon.api.domain.Account">
+        insert into t_account (user_id, account_num,account_name,phone, email,password,create_time)
+        values (#{userId,jdbcType=BIGINT},#{accountNum,jdbcType=BIGINT}, #{accountName,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},#{createTime,jdbcType=BIGINT})
+    </insert>
+    <select id="getAccountByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        user_id,account_num,account_name,phone,email,password
+        from t_account
+        where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+    <select id="getAccountByAccountNum" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        user_id,account_num,account_name,phone,email,password
+        from t_account
+        where account_num = #{accountNum,jdbcType=BIGINT}
+    </select>
+    <select id="getAccountByAccountName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        user_id,account_num,account_name,phone,email,password
+        from t_account
+        where account_name = #{accountName,jdbcType=VARCHAR}
+    </select>
+    <select id="getAccountByPhone" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        user_id,account_num,account_name,phone,email,password
+        from t_account
+        where phone = #{phone,jdbcType=VARCHAR}
+    </select>
+    <select id="getAccountByEmail" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        user_id,account_num,account_name,phone,email,password
+        from t_account
+        where email = #{email,jdbcType=VARCHAR}
+    </select>
+    <select id="getAccount" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        user_id,account_num,account_name,phone,email,password
+        from t_account
+        where 1=1
+        <if test="email != null and email !=''">
+            and email = #{email,jdbcType=VARCHAR}
+        </if>
+        <if test="phone != null and phone !=''">
+            and phone = #{phone,jdbcType=VARCHAR}
+        </if>
+        <if test="account_name != null and account_name !=''">
+            and account_name = #{account_name,jdbcType=VARCHAR}
+        </if>
+        <if test="account_num != null">
+            and account_num = #{account_num,jdbcType=BIGINT}
+        </if>
+    </select>
+</mapper>
